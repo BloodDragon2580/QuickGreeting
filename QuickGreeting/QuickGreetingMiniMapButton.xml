@@ -76,8 +76,8 @@
             <OnEnter>
                 GameTooltip:SetOwner(QuickGreeting_MinimapButton, "ANCHOR_LEFT")
                 GameTooltip:SetText(L["QuickGreeting"])
-                GameTooltip:AddLine(L["TooltipLeftClick"])
-                GameTooltip:AddLine(L["TooltipRightClick"])
+                GameTooltip:AddLine(L["Left Click to Open the Frame"])
+                GameTooltip:AddLine(L["Right Click to move the Button"])
                 GameTooltip:Show()
             </OnEnter>
             <OnLeave>
