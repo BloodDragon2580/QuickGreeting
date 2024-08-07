@@ -1,7 +1,5 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
-
     <Script file="QuickGreeting.lua"/>
-
     <Button name="QuickGreeting_MinimapButton" parent="Minimap" enableMouse="true" movable="true" hidden="false">
         <Size>
             <AbsDimension x="33" y="33"/>
@@ -74,14 +72,10 @@
                 QuickGreeting_MinimapButton_OnClick(button)
             </OnClick>
             <OnEnter>
-                GameTooltip:SetOwner(QuickGreeting_MinimapButton, "ANCHOR_LEFT")
-                GameTooltip:SetText(L["QuickGreeting"])
-                GameTooltip:AddLine(L["Left Click to Open the Frame"])
-                GameTooltip:AddLine(L["Right Click to move the Button"])
-                GameTooltip:Show()
+                QuickGreeting_MinimapButton_OnEnter()
             </OnEnter>
             <OnLeave>
-                GameTooltip:Hide()
+                QuickGreeting_MinimapButton_OnLeave()
             </OnLeave>
         </Scripts>
     </Button>

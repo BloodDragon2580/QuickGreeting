@@ -27,14 +27,24 @@ if GetLocale() == "deDE" then
     L["TooltipRightClick"] = "Rechtsklick, um den Button zu verschieben"
 end
 
--- Add more languages here as needed
-
 -- Funktion für den Minimap-Button-Klick
 function QuickGreeting_MinimapButton_OnClick(button)
     if button == "LeftButton" then
-        -- Toggle the frame visibility using the slash command
         SlashCmdList["QUICKGREETING"]("")
     end
+end
+
+-- Funktion für das Minimap-Button-Tooltip
+function QuickGreeting_MinimapButton_OnEnter()
+    GameTooltip:SetOwner(QuickGreeting_MinimapButton, "ANCHOR_LEFT")
+    GameTooltip:SetText(L["QuickGreeting"])
+    GameTooltip:AddLine(L["TooltipLeftClick"])
+    GameTooltip:AddLine(L["TooltipRightClick"])
+    GameTooltip:Show()
+end
+
+function QuickGreeting_MinimapButton_OnLeave()
+    GameTooltip:Hide()
 end
 
 -- Funktion für das Draggen des Minimap-Buttons
@@ -50,9 +60,7 @@ end
 -- Funktion zur Aktualisierung der Position des Minimap-Buttons
 function QuickGreeting_MinimapButton_Reposition()
     local minimapButton = _G["QuickGreeting_MinimapButton"]
-    if minimapButton then
-        minimapButton:SetPoint("TOPLEFT", "Minimap", "TOPLEFT", 52 - (80 * cos(math.rad(QuickGreetingDB.MinimapPos))), (80 * sin(math.rad(QuickGreetingDB.MinimapPos))) - 52)
-    end
+    minimapButton:SetPoint("TOPLEFT", "Minimap", "TOPLEFT", 52 - (80 * cos(math.rad(QuickGreetingDB.MinimapPos))), (80 * sin(math.rad(QuickGreetingDB.MinimapPos))) - 52)
 end
 
 -- Frame für die Hauptoberfläche erstellen
@@ -96,7 +104,6 @@ local helloButton = CreateButton("Hello", 30, L["HelloMessage"])
 local thanksButton = CreateButton("ThankYou", 0, L["ThankYouMessage"])
 local byeButton = CreateButton("Goodbye", -30, L["GoodbyeMessage"])
 
-
 -- Funktionen zur Aktualisierung der Positionen des Frames
 local function UpdateFramePosition()
     if QuickGreetingDB and QuickGreetingDB.framePos then
@@ -110,44 +117,20 @@ local function UpdateFramePosition()
     end
 end
 
--- Event-Handler für das Addon
 frame:RegisterEvent("ADDON_LOADED")
-frame:SetScript("OnEvent", function(self, event, arg1)
-    if event == "ADDON_LOADED" and arg1 == addonName then
-        if not QuickGreetingDB then
-            QuickGreetingDB = {}
-        end
+frame:SetScript("OnEvent", function(self, event, addon)
+    if addon == addonName then
+        QuickGreetingDB = QuickGreetingDB or {}
         UpdateFramePosition()
-        self:UnregisterEvent("ADDON_LOADED")
     end
 end)
 
--- Slash-Befehl einrichten
+-- Slash-Befehl zum Öffnen/Schließen des Frames
 SLASH_QUICKGREETING1 = "/qg"
-SlashCmdList["QUICKGREETING"] = function(msg)
+SlashCmdList["QUICKGREETING"] = function()
     if frame:IsShown() then
         frame:Hide()
     else
         frame:Show()
     end
 end
-
--- Funktion zum Setzen des Tooltips für den Minimap-Button
-local function UpdateTooltip()
-    local minimapButton = _G["QuickGreeting_MinimapButton"]
-    if minimapButton then
-        minimapButton:SetScript("OnEnter", function(self)
-            GameTooltip:SetOwner(self, "ANCHOR_LEFT")
-            GameTooltip:SetText(L["QuickGreeting"])
-            GameTooltip:AddLine(L["TooltipLeftClick"])
-            GameTooltip:AddLine(L["TooltipRightClick"])
-            GameTooltip:Show()
-        end)
-        minimapButton:SetScript("OnLeave", function()
-            GameTooltip:Hide()
-        end)
-    end
-end
-
--- Initialisieren
-UpdateTooltip()
