@@ -94,7 +94,7 @@ local function CreateButton(name, y, command)
     button:SetPoint("CENTER", frame, "CENTER", 0, y)
     button:SetText(L[name])  -- Verwende die Übersetzung für den Button-Text
     button:SetScript("OnClick", function()
-        SendChatMessage(command, IsInRaid() and "RAID" or IsInGroup() and "PARTY" or "SAY")
+        SendChatMessage(command, IsInRaid() and "RAID" or IsInGroup() and "PARTY" or IsInInstance() and "INSTANCE_CHAT" or "SAY")
     end)
     return button
 end
