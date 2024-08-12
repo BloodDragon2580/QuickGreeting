@@ -94,7 +94,23 @@ local function CreateButton(name, y, command)
     button:SetPoint("CENTER", frame, "CENTER", 0, y)
     button:SetText(L[name])  -- Verwende die Übersetzung für den Button-Text
     button:SetScript("OnClick", function()
-        SendChatMessage(command, IsInRaid() and "RAID" or IsInGroup() and "PARTY" or IsInInstance() and "INSTANCE_CHAT" or "SAY")
+        local channel
+        if IsInRaid() then
+            channel = "RAID"
+        elseif IsInGroup() then
+            channel = "PARTY"
+        elseif IsInInstance() and not IsInRaid() then
+            channel = "INSTANCE_CHAT"
+        else
+            channel = "SAY"
+        end
+        
+        -- Fallback auf PARTY, wenn INSTANCE_CHAT nicht funktioniert
+        if channel == "INSTANCE_CHAT" and not (IsInInstance() and GetInstanceInfo() == "party") then
+            channel = "PARTY"
+        end
+        
+        SendChatMessage(command, channel)
     end)
     return button
 end
@@ -117,11 +133,22 @@ local function UpdateFramePosition()
     end
 end
 
+-- Funktion zum Speichern des Frame-Zustands
+local function UpdateFrameState(isOpen)
+    QuickGreetingDB.frameOpen = isOpen
+end
+
 frame:RegisterEvent("ADDON_LOADED")
 frame:SetScript("OnEvent", function(self, event, addon)
     if addon == addonName then
         QuickGreetingDB = QuickGreetingDB or {}
         UpdateFramePosition()
+        -- Frame-Zustand wiederherstellen
+        if QuickGreetingDB.frameOpen then
+            frame:Show()
+        else
+            frame:Hide()
+        end
     end
 end)
 
@@ -130,7 +157,9 @@ SLASH_QUICKGREETING1 = "/qg"
 SlashCmdList["QUICKGREETING"] = function()
     if frame:IsShown() then
         frame:Hide()
+        UpdateFrameState(false) -- Speichern des Zustands als geschlossen
     else
         frame:Show()
+        UpdateFrameState(true) -- Speichern des Zustands als geöffnet
     end
 end
