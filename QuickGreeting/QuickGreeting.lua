@@ -133,22 +133,11 @@ local function UpdateFramePosition()
     end
 end
 
--- Funktion zum Speichern des Frame-Zustands
-local function UpdateFrameState(isOpen)
-    QuickGreetingDB.frameOpen = isOpen
-end
-
 frame:RegisterEvent("ADDON_LOADED")
 frame:SetScript("OnEvent", function(self, event, addon)
     if addon == addonName then
         QuickGreetingDB = QuickGreetingDB or {}
         UpdateFramePosition()
-        -- Frame-Zustand wiederherstellen
-        if QuickGreetingDB.frameOpen then
-            frame:Show()
-        else
-            frame:Hide()
-        end
     end
 end)
 
@@ -157,9 +146,7 @@ SLASH_QUICKGREETING1 = "/qg"
 SlashCmdList["QUICKGREETING"] = function()
     if frame:IsShown() then
         frame:Hide()
-        UpdateFrameState(false) -- Speichern des Zustands als geschlossen
     else
         frame:Show()
-        UpdateFrameState(true) -- Speichern des Zustands als geöffnet
     end
 end
