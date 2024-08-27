@@ -104,12 +104,12 @@ local function CreateButton(name, y, command)
         else
             channel = "SAY"
         end
-        
+
         -- Fallback auf PARTY, wenn INSTANCE_CHAT nicht funktioniert
-        if channel == "INSTANCE_CHAT" and not (IsInInstance() and GetInstanceInfo() == "party") then
+        if channel == "INSTANCE_CHAT" and select(2, IsInInstance()) ~= "party" then
             channel = "PARTY"
         end
-        
+
         SendChatMessage(command, channel)
     end)
     return button
@@ -134,10 +134,72 @@ local function UpdateFramePosition()
 end
 
 frame:RegisterEvent("ADDON_LOADED")
+frame:RegisterEvent("PLAYER_ENTERING_WORLD")
+frame:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 frame:SetScript("OnEvent", function(self, event, addon)
-    if addon == addonName then
+    if event == "ADDON_LOADED" and addon == addonName then
         QuickGreetingDB = QuickGreetingDB or {}
         UpdateFramePosition()
+    elseif event == "PLAYER_ENTERING_WORLD" or event == "ZONE_CHANGED_NEW_AREA" then
+        -- Stelle sicher, dass die Buttons auch in Instanzen korrekt funktionieren
+        if IsInInstance() then
+            helloButton:SetScript("OnClick", function()
+                local channel
+                if IsInRaid() then
+                    channel = "RAID"
+                elseif IsInGroup() then
+                    channel = "PARTY"
+                elseif IsInInstance() and not IsInRaid() then
+                    channel = "INSTANCE_CHAT"
+                else
+                    channel = "SAY"
+                end
+
+                if channel == "INSTANCE_CHAT" and select(2, IsInInstance()) ~= "party" then
+                    channel = "PARTY"
+                end
+
+                SendChatMessage(L["HelloMessage"], channel)
+            end)
+
+            thanksButton:SetScript("OnClick", function()
+                local channel
+                if IsInRaid() then
+                    channel = "RAID"
+                elseif IsInGroup() then
+                    channel = "PARTY"
+                elseif IsInInstance() and not IsInRaid() then
+                    channel = "INSTANCE_CHAT"
+                else
+                    channel = "SAY"
+                end
+
+                if channel == "INSTANCE_CHAT" and select(2, IsInInstance()) ~= "party" then
+                    channel = "PARTY"
+                end
+
+                SendChatMessage(L["ThankYouMessage"], channel)
+            end)
+
+            byeButton:SetScript("OnClick", function()
+                local channel
+                if IsInRaid() then
+                    channel = "RAID"
+                elseif IsInGroup() then
+                    channel = "PARTY"
+                elseif IsInInstance() and not IsInRaid() then
+                    channel = "INSTANCE_CHAT"
+                else
+                    channel = "SAY"
+                end
+
+                if channel == "INSTANCE_CHAT" and select(2, IsInInstance()) ~= "party" then
+                    channel = "PARTY"
+                end
+
+                SendChatMessage(L["GoodbyeMessage"], channel)
+            end)
+        end
     end
 end)
 
