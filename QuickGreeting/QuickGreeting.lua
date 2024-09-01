@@ -87,6 +87,21 @@ frame:SetBackdrop({
 frame:SetBackdropColor(0.1, 0.1, 0.1, 0.7) -- Grau, leicht transparent
 frame:Hide()
 
+-- Funktion zur Bestimmung des Chat-Kanals
+local function DetermineChatChannel()
+    if IsInRaid() then
+        return "RAID"
+    elseif IsInGroup() then
+        if IsInInstance() then
+            return "INSTANCE_CHAT"
+        else
+            return "PARTY"
+        end
+    else
+        return "SAY"
+    end
+end
+
 -- Funktion zum Erstellen der Buttons im Frame
 local function CreateButton(name, y, command)
     local button = CreateFrame("Button", name, frame, "UIPanelButtonTemplate")
@@ -94,22 +109,7 @@ local function CreateButton(name, y, command)
     button:SetPoint("CENTER", frame, "CENTER", 0, y)
     button:SetText(L[name])  -- Verwende die Übersetzung für den Button-Text
     button:SetScript("OnClick", function()
-        local channel
-        if IsInRaid() then
-            channel = "RAID"
-        elseif IsInGroup() then
-            channel = "PARTY"
-        elseif IsInInstance() and not IsInRaid() then
-            channel = "INSTANCE_CHAT"
-        else
-            channel = "SAY"
-        end
-
-        -- Fallback auf PARTY, wenn INSTANCE_CHAT nicht funktioniert
-        if channel == "INSTANCE_CHAT" and select(2, IsInInstance()) ~= "party" then
-            channel = "PARTY"
-        end
-
+        local channel = DetermineChatChannel()
         SendChatMessage(command, channel)
     end)
     return button
@@ -141,65 +141,7 @@ frame:SetScript("OnEvent", function(self, event, addon)
         QuickGreetingDB = QuickGreetingDB or {}
         UpdateFramePosition()
     elseif event == "PLAYER_ENTERING_WORLD" or event == "ZONE_CHANGED_NEW_AREA" then
-        -- Stelle sicher, dass die Buttons auch in Instanzen korrekt funktionieren
-        if IsInInstance() then
-            helloButton:SetScript("OnClick", function()
-                local channel
-                if IsInRaid() then
-                    channel = "RAID"
-                elseif IsInGroup() then
-                    channel = "PARTY"
-                elseif IsInInstance() and not IsInRaid() then
-                    channel = "INSTANCE_CHAT"
-                else
-                    channel = "SAY"
-                end
-
-                if channel == "INSTANCE_CHAT" and select(2, IsInInstance()) ~= "party" then
-                    channel = "PARTY"
-                end
-
-                SendChatMessage(L["HelloMessage"], channel)
-            end)
-
-            thanksButton:SetScript("OnClick", function()
-                local channel
-                if IsInRaid() then
-                    channel = "RAID"
-                elseif IsInGroup() then
-                    channel = "PARTY"
-                elseif IsInInstance() and not IsInRaid() then
-                    channel = "INSTANCE_CHAT"
-                else
-                    channel = "SAY"
-                end
-
-                if channel == "INSTANCE_CHAT" and select(2, IsInInstance()) ~= "party" then
-                    channel = "PARTY"
-                end
-
-                SendChatMessage(L["ThankYouMessage"], channel)
-            end)
-
-            byeButton:SetScript("OnClick", function()
-                local channel
-                if IsInRaid() then
-                    channel = "RAID"
-                elseif IsInGroup() then
-                    channel = "PARTY"
-                elseif IsInInstance() and not IsInRaid() then
-                    channel = "INSTANCE_CHAT"
-                else
-                    channel = "SAY"
-                end
-
-                if channel == "INSTANCE_CHAT" and select(2, IsInInstance()) ~= "party" then
-                    channel = "PARTY"
-                end
-
-                SendChatMessage(L["GoodbyeMessage"], channel)
-            end)
-        end
+        -- Hier brauchst du keine zusätzliche Logik mehr, die Buttons werden nun immer korrekt initialisiert
     end
 end)
 
