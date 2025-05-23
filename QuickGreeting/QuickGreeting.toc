@@ -1,8 +1,8 @@
-## Interface: 110105
+## Interface: 110107
 ## Title:|cffd6266cQuickGreeting|r
 ## Notes: Simple Communication: Quickly send "Hello," "Thank you," and "Goodbye" messages to your group, raid, or party.
 ## Author: BloodDragon2580
-## Version: 6.2
+## Version: 6.3
 ## SavedVariables: QuickGreetingDB
 ## IconTexture: Interface\AddOns\QuickGreeting\Media\Texture\logo
 
