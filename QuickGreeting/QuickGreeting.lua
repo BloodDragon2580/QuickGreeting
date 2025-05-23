@@ -27,6 +27,19 @@ if GetLocale() == "deDE" then
     L["TooltipRightClick"] = "Rechtsklick, um den Button zu verschieben"
 end
 
+-- Russian
+if GetLocale() == "ruRU" then
+    L["Hello"] = "Здравствуйте"
+    L["ThankYou"] = "Спасибо"
+    L["Goodbye"] = "До свидания"
+    L["HelloMessage"] = "Всем привет!"
+    L["ThankYouMessage"] = "Спасибо!"
+    L["GoodbyeMessage"] = "До свидания!"
+    L["QuickGreeting"] = "QuickGreeting"
+    L["TooltipLeftClick"] = "ЛКМ - открыть окно аддона"
+    L["TooltipRightClick"] = "ПКМ - переместить кнопку"
+end
+
 -- Funktion für den Minimap-Button-Klick
 function QuickGreeting_MinimapButton_OnClick(button)
     if button == "LeftButton" then
