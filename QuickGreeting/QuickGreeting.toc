@@ -1,9 +1,9 @@
-## Interface: 110200
+## Interface: 110205
 ## Title:|cffd6266cQuickGreeting|r
 ## Notes: Simple Communication: Quickly send "Hello," "Thank you," and "Goodbye" messages to your group, raid, or party.
 ## Notes-ruRU: Простое общение: быстро отправляйте сообщения «Привет», «Спасибо» и «До свидания» своей группе, рейду или гильдии.
 ## Author: BloodDragon2580
-## Version: 7.9
+## Version: 8.0
 ## SavedVariables: QuickGreetingDB
 ## IconTexture: Interface\AddOns\QuickGreeting\Media\Texture\logo
 
