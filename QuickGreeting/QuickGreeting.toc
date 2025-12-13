@@ -1,4 +1,4 @@
-## Interface: 120000
+## Interface: 120001
 ## Title:|cffd6266cQuickGreeting|r
 ## Notes: Simple Communication: Quickly send "Hello," "Thank you," and "Goodbye" messages to your group, raid, or party.
 ## Notes-ruRU: Простое общение: быстро отправляйте сообщения «Привет», «Спасибо» и «До свидания» своей группе, рейду или гильдии.
