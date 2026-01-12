@@ -3,7 +3,7 @@
 ## Notes: Simple Communication: Quickly send "Hello," "Thank you," and "Goodbye" messages to your group, raid, or party.
 ## Notes-ruRU: Простое общение: быстро отправляйте сообщения «Привет», «Спасибо» и «До свидания» своей группе, рейду или гильдии.
 ## Author: BloodDragon2580
-## Version: 8.9
+## Version: 10.0
 ## SavedVariables: QuickGreetingDB
 ## IconTexture: Interface\AddOns\QuickGreeting\Media\Texture\logo
 
